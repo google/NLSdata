@@ -1,1 +1,10 @@
-export(double.me)
+export(CreateNLSdata)
+export(GetChunkListFromContents)
+export(CreateTimeSeriesDf)
+export(ShowAcronyms)
+export(ThrowAwayDataForBalance)
+
+S3method(summary, NLSdata)
+
+
+

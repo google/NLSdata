@@ -1,8 +1,3 @@
-
-double.me <- function(x) {
-  return(2 * x)
-}
-
 # All missing data are clearly flagged in the NLSY97 data set with five negative values:
 # (-1) refusal, (-2) don't know, (-3) invalid skip, (-4) valid skip, and (-5) noninterview. 
 # Think about how these still might be MCAR
@@ -10,6 +5,10 @@ double.me <- function(x) {
 # roster: like a repeated element
 #  roster may be thought of as a list--for example, a list of household 
 # members, a list of employers, or a list of children. 
+all.logical <- function(var) {
+  ans <- all(sort(as.logical(unique(var))) == c(FALSE, TRUE))
+  return(ans)
+}
 
 trim <- function (x) gsub("^\\s+|\\s+$", "", x)
 
@@ -44,12 +43,12 @@ GetChunkListFromContents <- function(contents,
   return(chunks)
 }
 
-CreateNLSdata <- function(codebook, csv.extract, filedir,
-                          na.strings = c("-1", "-2", "-3", "-4", "-5")) {
-
-  contents <- readLines(file.path(filedir, codebook))
+CreateNLSdata <- function(codebook, csv.extract, 
+			  na.strings = c("-1", "-2", "-3", "-4", "-5")) {
+  write("\n", file = codebook, append = TRUE)
+  contents <- readLines(codebook)
   chunks <- GetChunkListFromContents(contents)
-  my.df <- read.csv(file.path(filedir, csv.extract), na.strings = na.strings)
+  my.df <- read.csv(csv.extract, na.strings = na.strings)
   metadata <- list()
   i = 0
   for (chunk in chunks) {
@@ -58,7 +57,7 @@ CreateNLSdata <- function(codebook, csv.extract, filedir,
     r.id <- sub("([A-Z][0-9\\.]+).*", "\\1",  chunk[1]) 
     r.id <- sub("\\.", "", r.id)
     name <- sub(".*\\[(.*)\\].*", "\\1", chunk[1])
-    year <- sub(".*Survey Year: (\\d{4})", "\\1", chunk[1])
+    year <- sub(".*Survey Year: (\\d{4}|XRND)", "\\1", chunk[1])
     
     summary.index <- 2 + min(grep("[A-Z]", chunk[3:length(chunk)]))
     summary <- trim(chunk[summary.index])
@@ -66,36 +65,85 @@ CreateNLSdata <- function(codebook, csv.extract, filedir,
     # Figuring out values from summary histograms 
     number.lines <- grep("^\\s*\\d", chunk)
     dash.index <- grep("^\\s+-", chunk)
-    distr.lines <- chunk[min(number.lines):(max(dash.index) - 1)]
+    distr.lines <- ""
+    if ((length(number.lines) > 0) & (length(dash.index) > 0)) {
+      distr.lines <- chunk[min(number.lines):(max(dash.index) - 1)]
+    }
     distr.lines <- gsub(":", "", distr.lines)
     char.map <- sub("^\\s+\\d+\\s+(\\d+)\\s(.*)$", "\\1\t\\2", distr.lines)
     char.map <- char.map[grepl("\t", char.map)]
     cont.evidence <- (length(grep("\tTO\\s", char.map)) > 0) | 
                      (length(char.map) == 0)
-    new.name <- paste(name, year, sep = ".")
-    if (cont.evidence) {
+    new.name <- gsub("-", "_", paste(name, year, sep = "."))
+    if (cont.evidence | length(distr.lines) == 0) {
       my.df <- rename(my.df, r.id, new.name) 
       } else {
       mapping <- data.frame()
-      for (elem in strsplit(char.map, "\t")) {
-        mapping <- rbind(mapping, data.frame(var1 = as.numeric(elem[[1]]),
-      				       var2 = elem[[2]]))
+      label.map.list <- strsplit(char.map, "\t")
+      for (k in 1:length(label.map.list)) {
+        mapping <- rbind(mapping,
+                         data.frame(var1 = as.numeric(label.map.list[[k]][1]),
+                                    var2 = label.map.list[[k]][2]))
       }
       names(mapping) <- c(r.id, new.name)
       print(names(mapping))  
       my.df <- merge(my.df, mapping, all.x = TRUE)
-      print(ncol(my.df))
-      if(ncol(my.df) < 501) stop("You're about to lose a column")
       my.df[, r.id] <- NULL
-      print(ncol(my.df))
+      if (all.logical(my.df[, new.name])) {
+        my.df[, new.name] <- as.logical(my.df[, new.name])
+      }
     }
-    if (ncol(my.df) < 500) stop("You lost a column")  
-    metadata[[name]] <- list(summary = summary, year = year, r.id = r.id, 
-  			   chunk = chunk) 
+    metadata[[new.name]] <- list(name = new.name, summary = summary,
+				 year = year, r.id = r.id, chunk = chunk) 
     cat("After chunk ", i, ",", nrow(my.df), "rows remain, ", 
         ncol(my.df), "cols remain, is numeric:", cont.evidence, "\n")
   }
   obj <- list(metadata = metadata, data = my.df)
   class(obj) <- "NLSdata"
   return(obj)
+}
+
+summary.NLSdata <- function(obj) {
+  vars <- names(obj$data)
+  for (var in vars) {
+    cat("------------------------------------------------------\n")
+    cat("*** Variable:", var, "***\n")
+    cat("------------------------------------------------------\n")
+    cat("    Year:", obj$metadata[[var]]$year, "\n")
+    cat("    Summary:", obj$metadata[[var]]$summary, "\n")
+    cat("    Distribution:\n")
+    print(summary(obj$data[, var]))
+  }
+}
+
+CreateTimeSeriesDf <- function(obj, variable.base) {
+  require(reshape2)
+  var.vec <- sort(grep(variable.base, names(obj$data), value = TRUE))
+  year.vec <- as.numeric(sub(".*(\\d{4}.*)", "\\1", var.vec))
+  var.type <- class(obj$data[, var.vec[1]])
+       
+  melted.df <- melt(obj$data[, c("PUBID.1997", var.vec)], id = "PUBID.1997")
+  if (var.type == "logical") {
+    melted.df[, "value"] <- as.logical(melted.df[, "value"])
+  }
+  melted.df$year <- as.numeric(sub(".*(\\d{4}.*)", "\\1", melted.df$variable))
+  melted.df$variable <- NULL                                       
+  names(melted.df) <- c("PUBID.1997", variable.base, "year")
+  return(melted.df)
+}
+
+ShowAcronyms <- function() {
+  print("R : Respondant")
+  print("RS: Round Specific")
+  print("CV: Created Variable")
+  print("CVC: Cumulative Version of Created Variable")
+  print("XRND: accross rounds")
+  print("E: Event history")
+}
+
+ThrowAwayDataForBalance <- function(df, var.name) {
+  n.df <- aggregate(df[, var.name], by = list(df$PUBID.1997),
+	            FUN = function(x) sum(!is.na(x)))
+  new.df <- df[df$PUBID.1997 %in% n.df[n.df$x == max(n.df$x), "Group.1"], ]
+  return(new.df)
 }

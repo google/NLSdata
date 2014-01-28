@@ -1,9 +1,10 @@
 Package: NLSdata
-Version: 0.01
-Date: 2014-01-01
+Version: 0.02
+Date: 2014-01-27
 Title: A package for working with National Longitudinal Survey Data
 Author: Ben Ogorek
 Maintainer: Ben Ogorek <baogorek@gmail.com>
+Depends: reshape2
 Description: A short (one paragraph) description of what
   the package does and why it may be useful.
 License: GPL (>= 2)
