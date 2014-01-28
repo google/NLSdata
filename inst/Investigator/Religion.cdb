@@ -1,0 +1,344 @@
+R00001.00    [PUBID]                                        Survey Year: 1997
+  PRIMARY VARIABLE
+
+ 
+             PUBID, YOUTH CASE IDENTIFICATION CODE
+ 
+COMMENT: YOUTH CASE IDENTIFICATION CODE
+ 
+       0           0
+     998           1 TO 999
+     999        1000 TO 1999
+     997        2000 TO 2999
+     996        3000 TO 3999
+     998        4000 TO 4999
+     996        5000 TO 5999
+     994        6000 TO 6999
+     994        7000 TO 7999
+     989        8000 TO 8999
+      23        9000 TO 9999
+  -------
+    8984
+ 
+Refusal(-1)            0
+Don't Know(-2)         0
+TOTAL =========>    8984   VALID SKIP(-4)       0     NON-INTERVIEW(-5)       0
+ 
+Min:              1        Max:           9022        Mean:              4504.3
+ 
+Hard Minimum: [0]  Hard Maximum: [99999999]
+ 
+Lead In: R72976.00[Default]
+Default Next Question: R05363.00
+--------------------------------------------------------------------------------
+R05363.00    [KEY!SEX]                                      Survey Year: 1997
+  PRIMARY VARIABLE
+
+ 
+             KEY!SEX, RS GENDER (SYMBOL)
+ 
+COMMENT: Gender of Youth
+ 
+    4599       1 Male
+    4385       2 Female
+       0       0 No Information
+  -------
+    8984
+ 
+Refusal(-1)            0
+Don't Know(-2)         0
+TOTAL =========>    8984   VALID SKIP(-4)       0     NON-INTERVIEW(-5)       0
+ 
+Lead In: R00001.00[Default]
+Default Next Question: R05364.00
+--------------------------------------------------------------------------------
+R05364.01    [KEY!BDATE_M]                                  Survey Year: 1997
+  PRIMARY VARIABLE
+
+ 
+             KEY!BDATE, RS BIRTHDATE MONTH/YEAR (SYMBOL)
+ 
+COMMENT: Birthdate of Youth
+ 
+     816           1: January
+     693           2: February
+     760           3: March
+     659           4: April
+     689           5: May
+     720           6: June
+     762           7: July
+     782           8: August
+     839           9: September
+     765          10: October
+     763          11: November
+     736          12: December
+  -------
+    8984
+ 
+Refusal(-1)            0
+Don't Know(-2)         0
+TOTAL =========>    8984   VALID SKIP(-4)       0     NON-INTERVIEW(-5)       0
+ 
+Min:              1        Max:             12        Mean:                6.56
+ 
+Earliest (NonMissing): JANUARY/1980
+Latest   (NonMissing): DECEMBER/1984
+ 
+Hard Minimum: [01/01/1880]  Hard Maximum: [the current date]
+ 
+Lead In: R05363.00[Default]
+Default Next Question: R05366.00
+--------------------------------------------------------------------------------
+R05364.02    [KEY!BDATE_Y]                                  Survey Year: 1997
+  PRIMARY VARIABLE
+
+ 
+             KEY!BDATE, RS BIRTHDATE MONTH/YEAR (SYMBOL)
+ 
+COMMENT: Birthdate of Youth
+ 
+Refusal(-1)            0
+Don't Know(-2)         0
+TOTAL =========>    8984   VALID SKIP(-4)       0     NON-INTERVIEW(-5)       0
+ 
+Min:           1980        Max:           1984        Mean:             1982.01
+ 
+Earliest (NonMissing): JANUARY/1980
+Latest   (NonMissing): DECEMBER/1984
+ 
+Hard Minimum: [01/01/1880]  Hard Maximum: [the current date]
+ 
+Lead In: R05363.00[Default]
+Default Next Question: R05366.00
+--------------------------------------------------------------------------------
+R12358.00    [CV_SAMPLE_TYPE]                               Survey Year: 1997
+  PRIMARY VARIABLE
+
+ 
+             SAMPLE TYPE.  CROSS-SECTIONAL OR OVERSAMPLE
+ 
+Sample type: Is the respondent a member of the cross-sectional sample or the 
+oversample?
+ 
+    6748       1 Cross-sectional
+    2236       0 Oversample
+  -------
+    8984
+ 
+Refusal(-1)            0
+Don't Know(-2)         0
+TOTAL =========>    8984   VALID SKIP(-4)       0     NON-INTERVIEW(-5)       0
+ 
+Lead In: R12357.00[Default]
+Default Next Question: R12359.00
+--------------------------------------------------------------------------------
+R14826.00    [KEY!RACE_ETHNICITY]                           Survey Year: 1997
+  PRIMARY VARIABLE
+
+ 
+             KEY!RACE_ETHNICITY, COMBINED RACE AND ETHNICITY (SYMBOL)
+ 
+COMMENT: Combined race - ethnicity variable
+ 
+    2335       1 Black
+    1901       2 Hispanic
+      83       3 Mixed Race (Non-Hispanic)
+    4665       4 Non-Black / Non-Hispanic
+  -------
+    8984
+ 
+Refusal(-1)            0
+Don't Know(-2)         0
+TOTAL =========>    8984   VALID SKIP(-4)       0     NON-INTERVIEW(-5)       0
+ 
+Lead In: R05387.00[Default]
+Default Next Question: R05389.00
+--------------------------------------------------------------------------------
+S09194.00    [YSAQ-282A2]                                   Survey Year: 2002
+  PRIMARY VARIABLE
+
+ 
+             R DOES NOT NEED RELIGION FOR GOOD VALUES
+ 
+I don't need religion to have good values.
+ 
+UNIVERSE: All
+ 
+    3829       1 TRUE
+    4014       0 FALSE
+  -------
+    7843
+ 
+Refusal(-1)           33
+Don't Know(-2)        20
+TOTAL =========>    7896   VALID SKIP(-4)       0     NON-INTERVIEW(-5)    1088
+ 
+Lead In: S09193.00[Default]
+Default Next Question: S09195.00
+--------------------------------------------------------------------------------
+S63168.00    [YSAQ-282A2]                                   Survey Year: 2005
+  PRIMARY VARIABLE
+
+ 
+             R DOES NOT NEED RELIGION FOR GOOD VALUES
+ 
+I don't need religion to have good values.
+ 
+UNIVERSE: All
+ 
+    3679       1 TRUE
+    3306       0 FALSE
+  -------
+    6985
+ 
+Refusal(-1)           96
+Don't Know(-2)       257
+TOTAL =========>    7338   VALID SKIP(-4)       0     NON-INTERVIEW(-5)    1646
+ 
+Lead In: S63167.00[Default]
+Default Next Question: S63169.00
+--------------------------------------------------------------------------------
+S83317.00    [YSAQ-282A2]                                   Survey Year: 2006
+  PRIMARY VARIABLE
+
+ 
+             R DOES NOT NEED RELIGION FOR GOOD VALUES
+ 
+I don't need religion to have good values.
+ 
+UNIVERSE: Unreachable in current round
+ 
+       2       1 TRUE
+       0       0 FALSE
+  -------
+       2
+ 
+Refusal(-1)            0
+Don't Know(-2)         0
+TOTAL =========>       2   VALID SKIP(-4)    7557     NON-INTERVIEW(-5)    1425
+ 
+Lead In: S83316.00[Default]
+Default Next Question: S83318.00
+--------------------------------------------------------------------------------
+T27819.00    [YSAQ-282A2]                                   Survey Year: 2008
+  PRIMARY VARIABLE
+
+ 
+             R DOES NOT NEED RELIGION FOR GOOD VALUES
+ 
+I don't need religion to have good values.
+ 
+UNIVERSE: All
+ 
+    3970       1 TRUE
+    3213       0 FALSE
+  -------
+    7183
+ 
+Refusal(-1)          113
+Don't Know(-2)       194
+TOTAL =========>    7490   VALID SKIP(-4)       0     NON-INTERVIEW(-5)    1494
+ 
+Lead In: T27818.00[Default]
+Default Next Question: T27820.00
+--------------------------------------------------------------------------------
+T66505.00    [VERSION_R15]                                  Survey Year: 2011
+  PRIMARY VARIABLE
+
+ 
+             VERSION_R15
+ 
+This variable identifies the release version of the current NLSY97 data set. 
+This information is used by User Services to identify the release version used 
+by a reseacher who is asking a question and to access to past versions of the 
+data if necessary.
+ 
+    7423     404 Month of current release in a continuous month format
+  -------
+    7423
+ 
+Refusal(-1)            0
+Don't Know(-2)         0
+TOTAL =========>    7423   VALID SKIP(-4)       0     NON-INTERVIEW(-5)    1561
+ 
+Lead In: T66504.00[Default]
+Default Next Question: T66506.00
+--------------------------------------------------------------------------------
+T76375.00    [YSAQ-282A2]                                   Survey Year: 2011
+  PRIMARY VARIABLE
+
+ 
+             R DOES NOT NEED RELIGION FOR GOOD VALUES
+ 
+I don't need religion to have good values.
+ 
+UNIVERSE: All
+ 
+    3843       1 TRUE
+    3263       0 FALSE
+  -------
+    7106
+ 
+Refusal(-1)          112
+Don't Know(-2)       205
+TOTAL =========>    7423   VALID SKIP(-4)       0     NON-INTERVIEW(-5)    1561
+ 
+Lead In: T76374.00[Default]
+Default Next Question: T76376.00
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
