@@ -1,13 +1,16 @@
-# All missing data are clearly flagged in the NLSY97 data set with five negative values:
-# (-1) refusal, (-2) don't know, (-3) invalid skip, (-4) valid skip, and (-5) noninterview. 
-# Think about how these still might be MCAR
 
-# roster: like a repeated element
-#  roster may be thought of as a list--for example, a list of household 
-# members, a list of employers, or a list of children. 
 all.logical <- function(var) {
-  ans <- all(sort(as.logical(unique(var))) == c(FALSE, TRUE))
-  return(ans)
+  # Checks whether a vector contains only logical constants, perhaps as chars
+  #
+  # Args:
+  #  var: a vector of any type
+  #
+  # Returns:
+  #  A logical scalar indicating whether the input can be treated as logical
+  unique.vals <- setdiff(unique(var), NA)
+  # Non-bolean values will be turned in to NA, stacked at the front
+  vals.as.logical <- sort(as.logical(unique.vals), na.last = FALSE)
+  return(identical(vals.as.logical, c(FALSE, TRUE)))
 }
 
 trim <- function (x) gsub("^\\s+|\\s+$", "", x)
@@ -130,6 +133,34 @@ CreateTimeSeriesDf <- function(obj, variable.base) {
   melted.df$variable <- NULL                                       
   names(melted.df) <- c("PUBID.1997", variable.base, "year")
   return(melted.df)
+}
+
+RosterToLongDf <- function(data, roster.base, id = "PUBID.1997") {
+  # Creates a long data frame from a wide roster variable set
+  #
+  # Args:
+  #  data: a data frame
+  #  roster.base: the stable character prefix of the roster variable
+  #  id: character name representing the unit identifier
+  #
+  # Returns:
+  #  A data frame in long format with the roster base as the outcome name
+  roster.vars <- grep(paste0(roster.base, "\\.\\d{2}\\.\\d{4}"),
+                      names(data), value = TRUE)
+  if (length(roster.vars) == 0){
+    stop("No rosters. Ensure that roster variables in form [base].dd.dddd")
+  }
+  roster.subset <- data[, c(id, roster.vars)]
+  roster.long <- melt(roster.subset, id.var = id)
+  roster.long <- roster.long[!is.na(roster.long$value), ]
+  roster.long$year <- sub(paste0(roster.base, "\\.\\d{2}\\.(\\d{4})"), "\\1",
+                          roster.long$variable)
+  roster.long[, roster.base] <- roster.long$value
+  roster.long$variable <- NULL
+  roster.long$value <- NULL
+  roster.long <- roster.long[order(roster.long[, id], roster.long$year),
+                             c(id, "year", roster.base)]
+  return(roster.long)
 }
 
 ShowAcronyms <- function() {

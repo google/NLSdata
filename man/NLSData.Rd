@@ -3,7 +3,7 @@
 \alias{NLSData}
 \alias{nlsdata}
 \title{The NLSdata package}
+
 \examples{
-  data(edu)
-  ls(edu)
+see \url{http://blog.analyzestuff.com/2014/02/nlsdata-r-package-for-national.html}
 }
