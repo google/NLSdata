@@ -1,8 +1,7 @@
 export(CreateNLSdata)
-export(GetChunkListFromContents)
 export(CreateTimeSeriesDf)
-export(ShowAcronyms)
 export(ThrowAwayDataForBalance)
+export(RosterToLongDf)
 
 S3method(summary, NLSdata)
 

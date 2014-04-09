@@ -16,6 +16,7 @@ all.logical <- function(var) {
 trim <- function (x) gsub("^\\s+|\\s+$", "", x)
 
 rename <- function(df, old, new, pos = NULL) {
+  # Renames R.* variable names to NLS versions with metadata built in
   df[, new] <- df[, old]
   df[, old] <- NULL;
   if (!is.null(pos)) { # This is a swap
@@ -32,7 +33,7 @@ rename <- function(df, old, new, pos = NULL) {
 
 GetChunkListFromContents <- function(contents, 
 			     separator = paste(rep("-", 80), collapse = "")) {
-
+  # Returns a list of distinct text chunks from the NLS codebook
   chunks <- list()
   chunk <- c()
   for (i in 1:length(contents)) {
@@ -48,6 +49,14 @@ GetChunkListFromContents <- function(contents,
 
 CreateNLSdata <- function(codebook, csv.extract, 
 			  na.strings = c("-1", "-2", "-3", "-4", "-5")) {
+  # Converts raw NLS Investigator output to an NLSdata object
+  #
+  # Args:
+  #  codebook: the .cdb file from the NLS Investigator export
+  #  csv.extract: the .csv file from the NLS Investigator export
+  #  na.strings: which of the missing value situations to represent as NA
+  # Returns:
+  #  an NLSdata object containing a data frame and metadata dictionary
   write("\n", file = codebook, append = TRUE)
   contents <- readLines(codebook)
   chunks <- GetChunkListFromContents(contents)
@@ -107,6 +116,10 @@ CreateNLSdata <- function(codebook, csv.extract,
 }
 
 summary.NLSdata <- function(obj) {
+  # Prints summary information for NLSdata object
+  # 
+  # Args:
+  #  obj: An NLSdata object
   vars <- names(obj$data)
   for (var in vars) {
     cat("------------------------------------------------------\n")
@@ -120,6 +133,14 @@ summary.NLSdata <- function(obj) {
 }
 
 CreateTimeSeriesDf <- function(obj, variable.base) {
+  # Converts a repeated element into a long format data frame
+  #
+  # Args:
+  #  obj: an NLSdata object
+  #  variable.base: character string common prefix for the repeated element
+  #
+  # Returns:
+  #  A data frame in long format
   require(reshape2)
   var.vec <- sort(grep(variable.base, names(obj$data), value = TRUE))
   year.vec <- as.numeric(sub(".*(\\d{4}.*)", "\\1", var.vec))
@@ -163,18 +184,18 @@ RosterToLongDf <- function(data, roster.base, id = "PUBID.1997") {
   return(roster.long)
 }
 
-ShowAcronyms <- function() {
-  print("R : Respondant")
-  print("RS: Round Specific")
-  print("CV: Created Variable")
-  print("CVC: Cumulative Version of Created Variable")
-  print("XRND: accross rounds")
-  print("E: Event history")
-}
-
-ThrowAwayDataForBalance <- function(df, var.name) {
-  n.df <- aggregate(df[, var.name], by = list(df$PUBID.1997),
+ThrowAwayDataForBalance <- function(data, var.name, id = "PUBID.1997") {
+  # Achieve Balance over Time Period and Respondent by Crude Subsetting
+  #
+  # Args:
+  #  data: a data frame
+  #  var.name: variable to achieve balance with respect to
+  #  id: id variable, also to achieve balance with respect to
+  #
+  # Returns: a balanced data data frame
+  n.df <- aggregate(data[, var.name], by = list(data[[id]]),
 	            FUN = function(x) sum(!is.na(x)))
-  new.df <- df[df$PUBID.1997 %in% n.df[n.df$x == max(n.df$x), "Group.1"], ]
+  new.df <- data[data$PUBID.1997 %in% n.df[n.df$x == max(n.df$x), "Group.1"], ]
   return(new.df)
 }
+
