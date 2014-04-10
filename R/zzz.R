@@ -1,4 +1,5 @@
-.onLoad <- function(libname, pkgname) {
-  print("Welcome to the NLSdata package!")
-  print("type help(NLSdata)")
+.onAttach <- function(libname, pkgname) {
+  packageStartupMessage("\nWelcome to the NLSdata package!")
+  packageStartupMessage("For general information, type help(NLSdata)")
 }
+

@@ -2,6 +2,9 @@ export(CreateNLSdata)
 export(CreateTimeSeriesDf)
 export(ThrowAwayDataForBalance)
 export(RosterToLongDf)
+export(summary.NLSdata)
+
+importFrom(reshape2, melt)
 
 S3method(summary, NLSdata)
 

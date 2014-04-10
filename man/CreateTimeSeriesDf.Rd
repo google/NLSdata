@@ -1,7 +1,9 @@
 \name{CreateTimeSeriesDf}
 \alias{CreateTimeSeriesDf}
 \title{Convert Repeated Element into Long Format Data Frame}
-\description{the NLSdata package provides the function CreateTimeSeriesDf to coerce a portion of the data frame into a long format. Under the hood, it’s using the reshape2's melt function.}
+\description{the NLSdata package provides the function CreateTimeSeriesDf to
+  coerce a portion of the data frame into a long format. Under the hood, it's
+  using the reshape2's melt function.}
 \arguments{ 
   \item{obj}{an NLSdata object}
   \item{variable.base}{character string common prefix for the repeated element}

@@ -115,21 +115,23 @@ CreateNLSdata <- function(codebook, csv.extract,
   return(obj)
 }
 
-summary.NLSdata <- function(obj) {
+summary.NLSdata <- function(object, ...) {
   # Prints summary information for NLSdata object
   # 
   # Args:
-  #  obj: An NLSdata object
-  vars <- names(obj$data)
+  #  object: An NLSdata object
+  #  ...: Not used currently
+  vars <- names(object$data)
   for (var in vars) {
     cat("------------------------------------------------------\n")
     cat("*** Variable:", var, "***\n")
     cat("------------------------------------------------------\n")
-    cat("    Year:", obj$metadata[[var]]$year, "\n")
-    cat("    Summary:", obj$metadata[[var]]$summary, "\n")
+    cat("    Year:", object$metadata[[var]]$year, "\n")
+    cat("    Summary:", object$metadata[[var]]$summary, "\n")
     cat("    Distribution:\n")
-    print(summary(obj$data[, var]))
+    print(summary(object$data[, var]))
   }
+  UseMethod("summary")
 }
 
 CreateTimeSeriesDf <- function(obj, variable.base) {
@@ -141,7 +143,6 @@ CreateTimeSeriesDf <- function(obj, variable.base) {
   #
   # Returns:
   #  A data frame in long format
-  require(reshape2)
   var.vec <- sort(grep(variable.base, names(obj$data), value = TRUE))
   year.vec <- as.numeric(sub(".*(\\d{4}.*)", "\\1", var.vec))
   var.type <- class(obj$data[, var.vec[1]])
