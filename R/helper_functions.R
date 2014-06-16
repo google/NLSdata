@@ -124,14 +124,29 @@ summary.NLSdata <- function(object, ...) {
   vars <- names(object$data)
   for (var in vars) {
     cat("------------------------------------------------------\n")
-    cat("*** Variable:", var, "***\n")
+    cat("    ", var, ", measured in",  object$metadata[[var]]$year, "\n")
+    cat("    ", object$metadata[[var]]$summary, "\n")
     cat("------------------------------------------------------\n")
-    cat("    Year:", object$metadata[[var]]$year, "\n")
-    cat("    Summary:", object$metadata[[var]]$summary, "\n")
-    cat("    Distribution:\n")
     print(summary(object$data[, var]))
   }
-  UseMethod("summary")
+}
+
+KeywordSearch <- function(term, nlsdata) {
+  summary.vec <- c()
+  n <- length(nlsdata$metadata)
+  for (i in 1:n) {
+    summary.vec <- c(summary.vec, nlsdata$metadata[[i]]$summary)
+  }
+  found <- grep(term, summary.vec, ignore.case = TRUE)
+  for (i in found) {
+    cat("    ", nls.obj$metadata[[i]]$name, ", index:", i, "\n")
+    cat("    ", nlsdata$metadata[[i]]$summary, "\n")
+  }
+}
+
+#TODO: complete this stub
+RecodeNumeric <- function(old, map) {
+  return(old)
 }
 
 CreateTimeSeriesDf <- function(obj, variable.base) {
