@@ -2,6 +2,9 @@ export(CreateNLSdata)
 export(CreateTimeSeriesDf)
 export(ThrowAwayDataForBalance)
 export(RosterToLongDf)
+export(KeywordSearch)
+
+export(EncodeFactorAsNumeric)
 export(summary.NLSdata)
 
 importFrom(reshape2, melt)

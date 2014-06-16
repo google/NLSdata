@@ -195,6 +195,53 @@ Hard Minimum: [01/01/1880]  Hard Maximum: [the current date]
 Lead In: R05363.00[Default]
 Default Next Question: R05366.00
 --------------------------------------------------------------------------------
+R12049.00    [CV_HH_POV_RATIO]                              Survey Year: 1997
+  PRIMARY VARIABLE
+
+ 
+             RATIO OF HOUSEHOLD INCOME TO POVERTY LEVEL
+ 
+Ratio of household income to poverty level in the previous year.
+/* Topcoded. */
+ 
+     125           0
+    1396           1 TO 99: .01-.99
+    1392         100 TO 199: 1.00-1.99
+    1289         200 TO 299: 2.00-2.99
+     962         300 TO 399: 3.00-3.99
+     573         400 TO 499: 4.00-4.99
+     321         500 TO 599: 5.00-5.99
+     174         600 TO 699: 6.00-6.99
+      89         700 TO 799: 7.00-7.99
+      56         800 TO 899: 8.00-8.99
+      44         900 TO 999: 9.00-9.99
+       7        1000 TO 1099: 10.00-10.99
+       0        1100 TO 1199: 11.00-11.99
+       0        1200 TO 1299: 12.00-12.99
+       0        1300 TO 1399: 13.00-13.99
+       0        1400 TO 1499: 14.00-14.99
+       0        1500 TO 1599: 15.00-15.99
+     133        1600 TO 1699: 16.00-16.99
+       0        1700 TO 1799: 17.00-17.99
+       0        1800 TO 1899: 18.00-18.99
+       0        1900 TO 1999: 19.00-19.99
+       0        2000 TO 2999: 20.00-29.99
+       0        3000 TO 9999: 30.00+
+  -------
+    6561
+ 
+Refusal(-1)            0
+Don't Know(-2)         0
+Invalid Skip(-3)    1485
+TOTAL =========>    8046   VALID SKIP(-4)     938     NON-INTERVIEW(-5)       0
+ 
+Min:              0        Max:           1627        Mean:              283.18
+ 
+Hard Minimum: [0]  Hard Maximum: [20000]
+ 
+Lead In: R12048.00[Default]
+Default Next Question: R12050.00
+--------------------------------------------------------------------------------
 R12358.00    [CV_SAMPLE_TYPE]                               Survey Year: 1997
   PRIMARY VARIABLE
 
@@ -8861,12 +8908,6 @@ Hard Minimum: [0]  Hard Maximum: [999999]
  
 Lead In: T79624.00[Default]
 Default Next Question: T79613.00
-
-
-
-
-
-
 
 
 

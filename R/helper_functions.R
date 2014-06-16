@@ -31,6 +31,23 @@ rename <- function(df, old, new, pos = NULL) {
   return(df)
 }
 
+EncodeFactorAsNumeric <- function(var, new.levels, data, verbose = TRUE) {
+  # TODO: Needs documentation and a quick test
+  if (class(data[, var]) != "factor") {
+    stop("This function converts factors only")
+  }
+  old.levels <- levels(data[, var])
+  levels(data[, var]) <- new.levels
+  data[, var] <- as.numeric(as.character(data[, var]))
+  if (verbose) {
+    cat("mapping of", var, "\n")
+    for (i in 1:length(old.levels)) {
+      cat("Old level:", old.levels[i], ", New level:", new.levels[i], "\n")
+    }
+  }
+  return(data)
+}
+
 GetChunkListFromContents <- function(contents, 
 			     separator = paste(rep("-", 80), collapse = "")) {
   # Returns a list of distinct text chunks from the NLS codebook
@@ -132,6 +149,7 @@ summary.NLSdata <- function(object, ...) {
 }
 
 KeywordSearch <- function(term, nlsdata) {
+  #TODO: documentation
   summary.vec <- c()
   n <- length(nlsdata$metadata)
   for (i in 1:n) {
@@ -139,7 +157,7 @@ KeywordSearch <- function(term, nlsdata) {
   }
   found <- grep(term, summary.vec, ignore.case = TRUE)
   for (i in found) {
-    cat("    ", nls.obj$metadata[[i]]$name, ", index:", i, "\n")
+    cat("    ", nlsdata$metadata[[i]]$name, ", index:", i, "\n")
     cat("    ", nlsdata$metadata[[i]]$summary, "\n")
   }
 }
