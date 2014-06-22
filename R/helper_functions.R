@@ -153,18 +153,16 @@ KeywordSearch <- function(term, nlsdata) {
   summary.vec <- c()
   n <- length(nlsdata$metadata)
   for (i in 1:n) {
-    summary.vec <- c(summary.vec, nlsdata$metadata[[i]]$summary)
+    #summary.vec <- c(summary.vec, nlsdata$metadata[[i]]$summary)
+    text.to.search <- paste(nlsdata$metadata[[i]]$summary,
+                            paste(nlsdata$metadata[[i]]$chunk, collapse = " "))
+    summary.vec <- c(summary.vec, text.to.search)
   }
   found <- grep(term, summary.vec, ignore.case = TRUE)
   for (i in found) {
-    cat("    ", nlsdata$metadata[[i]]$name, ", index:", i, "\n")
-    cat("    ", nlsdata$metadata[[i]]$summary, "\n")
+    cat("*FOUND* : ", nlsdata$metadata[[i]]$name, ", index:", i, "\n")
+    cat(" SUMMARY: ", nlsdata$metadata[[i]]$summary, "\n\n")
   }
-}
-
-#TODO: complete this stub
-RecodeNumeric <- function(old, map) {
-  return(old)
 }
 
 CreateTimeSeriesDf <- function(obj, variable.base) {
